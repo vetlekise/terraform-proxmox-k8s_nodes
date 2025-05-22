@@ -1,0 +1,30 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.99.0
+    hooks:
+      - id: terraform_fmt
+        args:
+          - --args=-recursive
+
+      - id: terraform_validate
+
+      - id: terraform_tflint
+
+      - id: terraform_trivy
+
+      - id: terraform_checkov
+        args:
+          # Force checkov to scan the current directory.
+          - --args=-d .
+          # Explicitly tell checkov to use your configuration file.
+          - --args=--config-file __GIT_WORKING_DIR__/.checkov.yaml

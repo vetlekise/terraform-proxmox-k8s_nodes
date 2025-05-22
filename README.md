@@ -1,6 +1,6 @@
 # Module Name
 
-A terraform module for deploying worker and control plane nodes that can be used by Kubernetes. 
+A terraform module for deploying worker and control plane nodes that can be used by Kubernetes.
 
 ## Usage
 

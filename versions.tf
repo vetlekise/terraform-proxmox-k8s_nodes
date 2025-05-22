@@ -1,9 +1,9 @@
-# Set terraform and provider settings: https://www.terraform.io/docs/configuration/terraform.html#specifying-provider-requirements
-
 terraform {
-  required_version = "~> 1.0" # Specify the minimum Terraform version required.
-
+  required_version = "~> 1.0"
   required_providers {
-
+    proxmox = {
+      source  = "telmate/proxmox"
+      version = "3.0.1-rc8"
+    }
   }
 }

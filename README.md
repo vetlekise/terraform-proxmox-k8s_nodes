@@ -152,6 +152,7 @@ No modules.
 | <a name="input_searchdomain"></a> [searchdomain](#input\_searchdomain) | DNS search domain for the VMs (applied via Cloud-Init). | `string` | `null` | no |
 | <a name="input_ssh_public_keys"></a> [ssh\_public\_keys](#input\_ssh\_public\_keys) | String containing newline-separated public SSH keys. Mutually exclusive with ssh\_public\_keys\_file. | `string` | `null` | no |
 | <a name="input_ssh_public_keys_file"></a> [ssh\_public\_keys\_file](#input\_ssh\_public\_keys\_file) | Path to a file containing SSH public keys (one per line). Mutually exclusive with ssh\_public\_keys. | `string` | `null` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], \_ and -. This is only meta information | `string` | `"cluster"` | no |
 | <a name="input_template_name"></a> [template\_name](#input\_template\_name) | Name of the EXISTING Proxmox template to clone from. | `string` | n/a | yes |
 | <a name="input_vga_type"></a> [vga\_type](#input\_vga\_type) | Display type (e.g., 'serial0', 'std', 'qxl'). 'serial0' is good for headless servers. | `string` | `"std"` | no |
 | <a name="input_worker_base_vmid"></a> [worker\_base\_vmid](#input\_worker\_base\_vmid) | Starting VMID for worker nodes. If set to 0, Proxmox will assign the next available ID for each. If > 0, subsequent VMs get base\_vmid + index. | `number` | `0` | no |

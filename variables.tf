@@ -106,6 +106,12 @@ variable "scsihw" {
   default     = "virtio-scsi-single" # Good default for performance with VirtIO drivers
 }
 
+variable "tags" {
+  description = "Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], _ and -. This is only meta information"
+  type        = string
+  default     = "cluster"
+}
+
 # Default Hardware Specifications
 variable "default_vm_memory" {
   description = "Default memory (in MiB) for VMs."

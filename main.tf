@@ -18,7 +18,7 @@ resource "proxmox_vm_qemu" "control_plane_node" {
   # Basic VM config
   name        = "${var.control_plane_name_prefix}${format(var.node_name_suffix_format, count.index + 1)}"
   target_node = var.proxmox_target_node
-  tags        = join(",", concat(var.common_tags, var.control_plane_tags))
+  tags        = join(";", concat(var.common_tags, var.control_plane_tags))
   pool        = proxmox_pool.cluster_pool[0].poolid
   vmid        = var.control_plane_base_vmid != 0 ? var.control_plane_base_vmid + count.index : 0 # 0 means Proxmox picks next available
 
@@ -101,7 +101,7 @@ resource "proxmox_vm_qemu" "worker_node" {
 
   name        = "${var.worker_name_prefix}${format(var.node_name_suffix_format, count.index + 1)}"
   target_node = var.proxmox_target_node
-  tags        = join(",", concat(var.common_tags, var.worker_tags))
+  tags        = join(";", concat(var.common_tags, var.worker_tags))
   pool        = proxmox_pool.cluster_pool[0].poolid
   vmid        = var.worker_base_vmid != 0 ? var.worker_base_vmid + count.index : 0
 

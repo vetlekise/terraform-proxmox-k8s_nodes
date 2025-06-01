@@ -22,11 +22,17 @@ variable "worker_count" {
   default     = 0
 }
 
+variable "cluster_name" {
+  description = "The name for the Proxmox resource pool that will contain all cluster nodes."
+  type        = string
+  default     = "k8s-cluster"
+}
+
 # Naming and VMID
 variable "control_plane_name_prefix" {
   description = "Prefix for control plane VM names. Full name will be prefix + suffix_format (e.g., 'controlplane-')."
   type        = string
-  default     = "controlplane-"
+  default     = "control-plane-"
 }
 
 variable "worker_name_prefix" {
@@ -51,19 +57,6 @@ variable "worker_base_vmid" {
   description = "Starting VMID for worker nodes. If set to 0, Proxmox will assign the next available ID for each. If > 0, subsequent VMs get base_vmid + index."
   type        = number
   default     = 0
-}
-
-# Pool Configuration
-variable "control_plane_pool_name" {
-  description = "Name of the Proxmox resource pool for control plane nodes. If empty, no pool is created/used for control plane nodes."
-  type        = string
-  default     = ""
-}
-
-variable "worker_pool_name" {
-  description = "Name of the Proxmox resource pool for worker nodes. If empty, no pool is created/used for worker nodes."
-  type        = string
-  default     = ""
 }
 
 # Common VM Settings

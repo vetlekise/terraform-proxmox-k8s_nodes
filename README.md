@@ -103,8 +103,7 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [proxmox_pool.control_plane_pool](https://registry.terraform.io/providers/telmate/proxmox/3.0.1-rc8/docs/resources/pool) | resource |
-| [proxmox_pool.worker_pool](https://registry.terraform.io/providers/telmate/proxmox/3.0.1-rc8/docs/resources/pool) | resource |
+| [proxmox_pool.cluster_pool](https://registry.terraform.io/providers/telmate/proxmox/3.0.1-rc8/docs/resources/pool) | resource |
 | [proxmox_vm_qemu.control_plane_node](https://registry.terraform.io/providers/telmate/proxmox/3.0.1-rc8/docs/resources/vm_qemu) | resource |
 | [proxmox_vm_qemu.worker_node](https://registry.terraform.io/providers/telmate/proxmox/3.0.1-rc8/docs/resources/vm_qemu) | resource |
 
@@ -117,14 +116,14 @@ No modules.
 | <a name="input_cipassword"></a> [cipassword](#input\_cipassword) | Cloud-Init user password. Sensitive. Recommended to use null and rely on SSH keys. | `string` | `null` | no |
 | <a name="input_ciuser"></a> [ciuser](#input\_ciuser) | Cloud-Init username to configure. | `string` | `"adminuser"` | no |
 | <a name="input_cloudinit_ide_slot"></a> [cloudinit\_ide\_slot](#input\_cloudinit\_ide\_slot) | IDE slot for the Cloud-Init drive (e.g., 'ide0'). Ensure this doesn't conflict with cdrom\_ide\_slot. | `string` | `"ide0"` | no |
+| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name for the Proxmox resource pool that will contain all cluster nodes. | `string` | `"k8s-cluster"` | no |
 | <a name="input_control_plane_base_vmid"></a> [control\_plane\_base\_vmid](#input\_control\_plane\_base\_vmid) | Starting VMID for control plane nodes. If set to 0, Proxmox will assign the next available ID for each. If > 0, subsequent VMs get base\_vmid + index. | `number` | `0` | no |
 | <a name="input_control_plane_cloudinit_disk_storage"></a> [control\_plane\_cloudinit\_disk\_storage](#input\_control\_plane\_cloudinit\_disk\_storage) | Storage for control plane Cloud-Init drives. Overrides default\_cloudinit\_disk\_storage. | `string` | `null` | no |
 | <a name="input_control_plane_count"></a> [control\_plane\_count](#input\_control\_plane\_count) | Number of control plane nodes to create. | `number` | `0` | no |
 | <a name="input_control_plane_ip_configs"></a> [control\_plane\_ip\_configs](#input\_control\_plane\_ip\_configs) | List of IP configurations for control plane nodes (e.g., ['ip=10.0.1.10/24,gw=10.0.1.1', 'ip=10.0.1.11/24,gw=10.0.1.1']). Length should match control\_plane\_count. Empty/null entries use default\_ip\_config. | `list(string)` | `[]` | no |
-| <a name="input_control_plane_name_prefix"></a> [control\_plane\_name\_prefix](#input\_control\_plane\_name\_prefix) | Prefix for control plane VM names. Full name will be prefix + suffix\_format (e.g., 'controlplane-'). | `string` | `"controlplane-"` | no |
+| <a name="input_control_plane_name_prefix"></a> [control\_plane\_name\_prefix](#input\_control\_plane\_name\_prefix) | Prefix for control plane VM names. Full name will be prefix + suffix\_format (e.g., 'controlplane-'). | `string` | `"control-plane-"` | no |
 | <a name="input_control_plane_os_disk_size"></a> [control\_plane\_os\_disk\_size](#input\_control\_plane\_os\_disk\_size) | OS disk size for control plane VMs (e.g., '50G'). Overrides default\_os\_disk\_size. | `string` | `null` | no |
 | <a name="input_control_plane_os_disk_storage"></a> [control\_plane\_os\_disk\_storage](#input\_control\_plane\_os\_disk\_storage) | Storage pool for control plane OS disks. Overrides default\_os\_disk\_storage. | `string` | `null` | no |
-| <a name="input_control_plane_pool_name"></a> [control\_plane\_pool\_name](#input\_control\_plane\_pool\_name) | Name of the Proxmox resource pool for control plane nodes. If empty, no pool is created/used for control plane nodes. | `string` | `""` | no |
 | <a name="input_control_plane_vm_cores"></a> [control\_plane\_vm\_cores](#input\_control\_plane\_vm\_cores) | Number of CPU cores for control plane VMs. Overrides default\_vm\_cores. | `number` | `null` | no |
 | <a name="input_control_plane_vm_memory"></a> [control\_plane\_vm\_memory](#input\_control\_plane\_vm\_memory) | Memory (in MiB) for control plane VMs. Overrides default\_vm\_memory. | `number` | `null` | no |
 | <a name="input_control_plane_vm_sockets"></a> [control\_plane\_vm\_sockets](#input\_control\_plane\_vm\_sockets) | Number of CPU sockets for control plane VMs. Overrides default\_vm\_sockets. | `number` | `null` | no |
@@ -162,7 +161,6 @@ No modules.
 | <a name="input_worker_name_prefix"></a> [worker\_name\_prefix](#input\_worker\_name\_prefix) | Prefix for worker VM names. Full name will be prefix + suffix\_format (e.g., 'worker-'). | `string` | `"worker-"` | no |
 | <a name="input_worker_os_disk_size"></a> [worker\_os\_disk\_size](#input\_worker\_os\_disk\_size) | OS disk size for worker VMs (e.g., '100G'). Overrides default\_os\_disk\_size. | `string` | `null` | no |
 | <a name="input_worker_os_disk_storage"></a> [worker\_os\_disk\_storage](#input\_worker\_os\_disk\_storage) | Storage pool for worker OS disks. Overrides default\_os\_disk\_storage. | `string` | `null` | no |
-| <a name="input_worker_pool_name"></a> [worker\_pool\_name](#input\_worker\_pool\_name) | Name of the Proxmox resource pool for worker nodes. If empty, no pool is created/used for worker nodes. | `string` | `""` | no |
 | <a name="input_worker_vm_cores"></a> [worker\_vm\_cores](#input\_worker\_vm\_cores) | Number of CPU cores for worker VMs. Overrides default\_vm\_cores. | `number` | `null` | no |
 | <a name="input_worker_vm_memory"></a> [worker\_vm\_memory](#input\_worker\_vm\_memory) | Memory (in MiB) for worker VMs. Overrides default\_vm\_memory. | `number` | `null` | no |
 | <a name="input_worker_vm_sockets"></a> [worker\_vm\_sockets](#input\_worker\_vm\_sockets) | Number of CPU sockets for worker VMs. Overrides default\_vm\_sockets. | `number` | `null` | no |

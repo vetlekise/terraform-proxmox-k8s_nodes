@@ -26,8 +26,9 @@ module "example" {
   node_name_suffix_format   = "%02d" # e.g., k8s-cp-01, k8s-worker-01
   control_plane_base_vmid   = 200    # VMs will be 200, 201
   worker_base_vmid          = 300    # VMs will be 300, 301, 302
-  control_plane_tags        = "control_planes"
-  worker_tags               = "workers"
+  common_tags               = ["cluster"]
+  control_plane_tags        = ["control_planes"]
+  worker_tags               = ["workers"]
 
   # Common VM Settings
   initial_vm_state = "running"
@@ -115,6 +116,7 @@ No modules.
 | <a name="input_ciuser"></a> [ciuser](#input\_ciuser) | Cloud-Init username to configure. | `string` | `"adminuser"` | no |
 | <a name="input_cloudinit_ide_slot"></a> [cloudinit\_ide\_slot](#input\_cloudinit\_ide\_slot) | IDE slot for the Cloud-Init drive (e.g., 'ide0'). Ensure this doesn't conflict with cdrom\_ide\_slot. | `string` | `"ide0"` | no |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name for the Proxmox resource pool that will contain all cluster nodes, and will also be used as a common tag for all nodes. | `string` | `"cluster"` | no |
+| <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | A list of tags to apply to all VMs in the cluster. | `list(string)` | <pre>[<br/>  "cluster"<br/>]</pre> | no |
 | <a name="input_control_plane_base_vmid"></a> [control\_plane\_base\_vmid](#input\_control\_plane\_base\_vmid) | Starting VMID for control plane nodes. If set to 0, Proxmox will assign the next available ID for each. If > 0, subsequent VMs get base\_vmid + index. | `number` | `0` | no |
 | <a name="input_control_plane_cloudinit_disk_storage"></a> [control\_plane\_cloudinit\_disk\_storage](#input\_control\_plane\_cloudinit\_disk\_storage) | Storage for control plane Cloud-Init drives. Overrides default\_cloudinit\_disk\_storage. | `string` | `null` | no |
 | <a name="input_control_plane_count"></a> [control\_plane\_count](#input\_control\_plane\_count) | Number of control plane nodes to create. | `number` | `0` | no |
@@ -122,7 +124,7 @@ No modules.
 | <a name="input_control_plane_name_prefix"></a> [control\_plane\_name\_prefix](#input\_control\_plane\_name\_prefix) | Prefix for control plane VM names. Full name will be prefix + suffix\_format (e.g., 'controlplane-'). | `string` | `"control-plane-"` | no |
 | <a name="input_control_plane_os_disk_size"></a> [control\_plane\_os\_disk\_size](#input\_control\_plane\_os\_disk\_size) | OS disk size for control plane VMs (e.g., '50G'). Overrides default\_os\_disk\_size. | `string` | `null` | no |
 | <a name="input_control_plane_os_disk_storage"></a> [control\_plane\_os\_disk\_storage](#input\_control\_plane\_os\_disk\_storage) | Storage pool for control plane OS disks. Overrides default\_os\_disk\_storage. | `string` | `null` | no |
-| <a name="input_control_plane_tags"></a> [control\_plane\_tags](#input\_control\_plane\_tags) | Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], \_ and -. This is only meta information | `string` | `"control_planes"` | no |
+| <a name="input_control_plane_tags"></a> [control\_plane\_tags](#input\_control\_plane\_tags) | A list of tags to apply only to control plane nodes. | `list(string)` | <pre>[<br/>  "control_planes"<br/>]</pre> | no |
 | <a name="input_control_plane_vm_cores"></a> [control\_plane\_vm\_cores](#input\_control\_plane\_vm\_cores) | Number of CPU cores for control plane VMs. Overrides default\_vm\_cores. | `number` | `null` | no |
 | <a name="input_control_plane_vm_memory"></a> [control\_plane\_vm\_memory](#input\_control\_plane\_vm\_memory) | Memory (in MiB) for control plane VMs. Overrides default\_vm\_memory. | `number` | `null` | no |
 | <a name="input_control_plane_vm_sockets"></a> [control\_plane\_vm\_sockets](#input\_control\_plane\_vm\_sockets) | Number of CPU sockets for control plane VMs. Overrides default\_vm\_sockets. | `number` | `null` | no |
@@ -160,7 +162,7 @@ No modules.
 | <a name="input_worker_name_prefix"></a> [worker\_name\_prefix](#input\_worker\_name\_prefix) | Prefix for worker VM names. Full name will be prefix + suffix\_format (e.g., 'worker-'). | `string` | `"worker-"` | no |
 | <a name="input_worker_os_disk_size"></a> [worker\_os\_disk\_size](#input\_worker\_os\_disk\_size) | OS disk size for worker VMs (e.g., '100G'). Overrides default\_os\_disk\_size. | `string` | `null` | no |
 | <a name="input_worker_os_disk_storage"></a> [worker\_os\_disk\_storage](#input\_worker\_os\_disk\_storage) | Storage pool for worker OS disks. Overrides default\_os\_disk\_storage. | `string` | `null` | no |
-| <a name="input_worker_tags"></a> [worker\_tags](#input\_worker\_tags) | Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], \_ and -. This is only meta information | `string` | `"workers"` | no |
+| <a name="input_worker_tags"></a> [worker\_tags](#input\_worker\_tags) | A list of tags to apply only to worker nodes. | `list(string)` | <pre>[<br/>  "workers"<br/>]</pre> | no |
 | <a name="input_worker_vm_cores"></a> [worker\_vm\_cores](#input\_worker\_vm\_cores) | Number of CPU cores for worker VMs. Overrides default\_vm\_cores. | `number` | `null` | no |
 | <a name="input_worker_vm_memory"></a> [worker\_vm\_memory](#input\_worker\_vm\_memory) | Memory (in MiB) for worker VMs. Overrides default\_vm\_memory. | `number` | `null` | no |
 | <a name="input_worker_vm_sockets"></a> [worker\_vm\_sockets](#input\_worker\_vm\_sockets) | Number of CPU sockets for worker VMs. Overrides default\_vm\_sockets. | `number` | `null` | no |

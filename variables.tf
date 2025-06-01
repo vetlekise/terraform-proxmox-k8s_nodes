@@ -106,16 +106,22 @@ variable "scsihw" {
   default     = "virtio-scsi-single" # Good default for performance with VirtIO drivers
 }
 
+variable "common_tags" {
+  description = "A list of tags to apply to all VMs in the cluster."
+  type        = list(string)
+  default     = ["cluster"]
+}
+
 variable "control_plane_tags" {
-  description = "Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], _ and -. This is only meta information"
-  type        = string
-  default     = "control_planes"
+  description = "A list of tags to apply only to control plane nodes."
+  type        = list(string)
+  default     = ["control_planes"]
 }
 
 variable "worker_tags" {
-  description = "Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], _ and -. This is only meta information"
-  type        = string
-  default     = "workers"
+  description = "A list of tags to apply only to worker nodes."
+  type        = list(string)
+  default     = ["workers"]
 }
 
 # Default Hardware Specifications

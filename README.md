@@ -26,8 +26,9 @@ module "example" {
   node_name_suffix_format   = "%02d" # e.g., k8s-cp-01, k8s-worker-01
   control_plane_base_vmid   = 200    # VMs will be 200, 201
   worker_base_vmid          = 300    # VMs will be 300, 301, 302
-  control_plane_tags        = "control_planes"
-  worker_tags               = "workers"
+  common_tags               = ["cluster"]
+  control_plane_tags        = ["control_planes"]
+  worker_tags               = ["workers"]
 
   # Common VM Settings
   initial_vm_state = "running"

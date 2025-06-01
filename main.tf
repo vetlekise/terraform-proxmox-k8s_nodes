@@ -1,16 +1,8 @@
-# Resource Pools
-resource "proxmox_pool" "control_plane_pool" {
-  count = var.control_plane_count > 0 && var.control_plane_pool_name != "" ? 1 : 0
+resource "proxmox_pool" "cluster_pool" {
+  count = (var.control_plane_count + var.worker_count) > 0 ? 1 : 0
 
-  poolid  = var.control_plane_pool_name
-  comment = "Resource pool for ${var.control_plane_pool_name}"
-}
-
-resource "proxmox_pool" "worker_pool" {
-  count = var.worker_count > 0 && var.worker_pool_name != "" ? 1 : 0
-
-  poolid  = var.worker_pool_name
-  comment = "Resource pool for ${var.worker_pool_name}"
+  poolid  = var.cluster_name
+  comment = "Resource pool for the ${var.cluster_name} cluster"
 }
 
 # Control Plane Nodes
@@ -26,7 +18,8 @@ resource "proxmox_vm_qemu" "control_plane_node" {
   # Basic VM config
   name        = "${var.control_plane_name_prefix}${format(var.node_name_suffix_format, count.index + 1)}"
   target_node = var.proxmox_target_node
-  pool        = var.control_plane_count > 0 && var.control_plane_pool_name != "" ? proxmox_pool.control_plane_pool[0].poolid : null
+  # Assign to the single cluster pool
+  pool        = proxmox_pool.cluster_pool[0].poolid
   vmid        = var.control_plane_base_vmid != 0 ? var.control_plane_base_vmid + count.index : 0 # 0 means Proxmox picks next available
 
   # OS / Agent / Display
@@ -53,7 +46,6 @@ resource "proxmox_vm_qemu" "control_plane_node" {
   scsihw  = var.scsihw
 
   # Boot order
-  # Example: "order=ide2;scsi0;net0"
   boot = "order=${var.cdrom_ide_slot};${var.os_disk_slot};net0;${var.cloudinit_ide_slot}"
 
   # Network configuration (net0)
@@ -62,13 +54,10 @@ resource "proxmox_vm_qemu" "control_plane_node" {
     model    = var.network_model
     bridge   = var.network_bridge
     firewall = var.network_firewall
-    # For static IP, macaddr might be needed if not handled by cloud-init reliably with name
-    # macaddr  = var.control_plane_mac_addresses[count.index] # If using static MACs
   }
 
   # Disk configuration
   disks {
-    # OS Disk
     scsi {
       scsi0 {
         disk {
@@ -77,31 +66,22 @@ resource "proxmox_vm_qemu" "control_plane_node" {
           discard    = var.os_disk_discard
           iothread   = var.os_disk_iothread
           emulatessd = var.os_disk_ssd
-          # backup = true
-          # replicate = false
         }
       }
     }
-
-    # Cloud-Init and CD-ROM Disks
     ide {
-      # Cloud-Init Disk
       ide0 {
         cloudinit {
           storage = coalesce(var.control_plane_cloudinit_disk_storage, var.default_cloudinit_disk_storage)
         }
       }
-
-      # CD-ROM
       ide2 {
-        cdrom {
-        }
+        cdrom {}
       }
     }
   }
 
   # Cloud-Init configuration
-  # Ensure the list length matches control_plane_count if using static IPs
   ipconfig0 = length(var.control_plane_ip_configs) > count.index && var.control_plane_ip_configs[count.index] != "" && var.control_plane_ip_configs[count.index] != null ? var.control_plane_ip_configs[count.index] : var.default_ip_config
 
   ciuser       = var.ciuser
@@ -121,7 +101,8 @@ resource "proxmox_vm_qemu" "worker_node" {
 
   name        = "${var.worker_name_prefix}${format(var.node_name_suffix_format, count.index + 1)}"
   target_node = var.proxmox_target_node
-  pool        = var.worker_count > 0 && var.worker_pool_name != "" ? proxmox_pool.worker_pool[0].poolid : null
+  # Assign to the single cluster pool
+  pool        = proxmox_pool.cluster_pool[0].poolid
   vmid        = var.worker_base_vmid != 0 ? var.worker_base_vmid + count.index : 0
 
   qemu_os = var.qemu_os
@@ -150,12 +131,10 @@ resource "proxmox_vm_qemu" "worker_node" {
     model    = var.network_model
     bridge   = var.network_bridge
     firewall = var.network_firewall
-    # macaddr  = var.worker_mac_addresses[count.index] # If using static MACs
   }
 
   # Disk configuration
   disks {
-    # OS Disk
     scsi {
       scsi0 {
         disk {
@@ -164,25 +143,17 @@ resource "proxmox_vm_qemu" "worker_node" {
           discard    = var.os_disk_discard
           iothread   = var.os_disk_iothread
           emulatessd = var.os_disk_ssd
-          # backup = true
-          # replicate = false
         }
       }
     }
-
-    # Cloud-Init and CD-ROM Disks
     ide {
-      # Cloud-Init Disk
       ide0 {
         cloudinit {
           storage = coalesce(var.worker_cloudinit_disk_storage, var.default_cloudinit_disk_storage)
         }
       }
-
-      # CD-ROM
       ide2 {
-        cdrom {
-        }
+        cdrom {}
       }
     }
   }

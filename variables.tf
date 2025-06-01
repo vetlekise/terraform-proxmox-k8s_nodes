@@ -23,9 +23,9 @@ variable "worker_count" {
 }
 
 variable "cluster_name" {
-  description = "The name for the Proxmox resource pool that will contain all cluster nodes."
+  description = "The name for the Proxmox resource pool that will contain all cluster nodes, and will also be used as a common tag for all nodes."
   type        = string
-  default     = "k8s-cluster"
+  default     = "cluster"
 }
 
 # Naming and VMID
@@ -106,10 +106,16 @@ variable "scsihw" {
   default     = "virtio-scsi-single" # Good default for performance with VirtIO drivers
 }
 
-variable "tags" {
+variable "control_plane_tags" {
   description = "Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], _ and -. This is only meta information"
   type        = string
-  default     = "cluster"
+  default     = "control_planes"
+}
+
+variable "worker_tags" {
+  description = "Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], _ and -. This is only meta information"
+  type        = string
+  default     = "workers"
 }
 
 # Default Hardware Specifications

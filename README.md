@@ -114,7 +114,7 @@ No modules.
 | <a name="input_cipassword"></a> [cipassword](#input\_cipassword) | Cloud-Init user password. Sensitive. Recommended to use null and rely on SSH keys. | `string` | `null` | no |
 | <a name="input_ciuser"></a> [ciuser](#input\_ciuser) | Cloud-Init username to configure. | `string` | `"adminuser"` | no |
 | <a name="input_cloudinit_ide_slot"></a> [cloudinit\_ide\_slot](#input\_cloudinit\_ide\_slot) | IDE slot for the Cloud-Init drive (e.g., 'ide0'). Ensure this doesn't conflict with cdrom\_ide\_slot. | `string` | `"ide0"` | no |
-| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name for the Proxmox resource pool that will contain all cluster nodes. | `string` | `"k8s-cluster"` | no |
+| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | The name for the Proxmox resource pool that will contain all cluster nodes, and will also be used as a common tag for all nodes. | `string` | `"cluster"` | no |
 | <a name="input_control_plane_base_vmid"></a> [control\_plane\_base\_vmid](#input\_control\_plane\_base\_vmid) | Starting VMID for control plane nodes. If set to 0, Proxmox will assign the next available ID for each. If > 0, subsequent VMs get base\_vmid + index. | `number` | `0` | no |
 | <a name="input_control_plane_cloudinit_disk_storage"></a> [control\_plane\_cloudinit\_disk\_storage](#input\_control\_plane\_cloudinit\_disk\_storage) | Storage for control plane Cloud-Init drives. Overrides default\_cloudinit\_disk\_storage. | `string` | `null` | no |
 | <a name="input_control_plane_count"></a> [control\_plane\_count](#input\_control\_plane\_count) | Number of control plane nodes to create. | `number` | `0` | no |
@@ -122,6 +122,7 @@ No modules.
 | <a name="input_control_plane_name_prefix"></a> [control\_plane\_name\_prefix](#input\_control\_plane\_name\_prefix) | Prefix for control plane VM names. Full name will be prefix + suffix\_format (e.g., 'controlplane-'). | `string` | `"control-plane-"` | no |
 | <a name="input_control_plane_os_disk_size"></a> [control\_plane\_os\_disk\_size](#input\_control\_plane\_os\_disk\_size) | OS disk size for control plane VMs (e.g., '50G'). Overrides default\_os\_disk\_size. | `string` | `null` | no |
 | <a name="input_control_plane_os_disk_storage"></a> [control\_plane\_os\_disk\_storage](#input\_control\_plane\_os\_disk\_storage) | Storage pool for control plane OS disks. Overrides default\_os\_disk\_storage. | `string` | `null` | no |
+| <a name="input_control_plane_tags"></a> [control\_plane\_tags](#input\_control\_plane\_tags) | Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], \_ and -. This is only meta information | `string` | `"control_planes"` | no |
 | <a name="input_control_plane_vm_cores"></a> [control\_plane\_vm\_cores](#input\_control\_plane\_vm\_cores) | Number of CPU cores for control plane VMs. Overrides default\_vm\_cores. | `number` | `null` | no |
 | <a name="input_control_plane_vm_memory"></a> [control\_plane\_vm\_memory](#input\_control\_plane\_vm\_memory) | Memory (in MiB) for control plane VMs. Overrides default\_vm\_memory. | `number` | `null` | no |
 | <a name="input_control_plane_vm_sockets"></a> [control\_plane\_vm\_sockets](#input\_control\_plane\_vm\_sockets) | Number of CPU sockets for control plane VMs. Overrides default\_vm\_sockets. | `number` | `null` | no |
@@ -150,7 +151,6 @@ No modules.
 | <a name="input_searchdomain"></a> [searchdomain](#input\_searchdomain) | DNS search domain for the VMs (applied via Cloud-Init). | `string` | `null` | no |
 | <a name="input_ssh_public_keys"></a> [ssh\_public\_keys](#input\_ssh\_public\_keys) | String containing newline-separated public SSH keys. Mutually exclusive with ssh\_public\_keys\_file. | `string` | `null` | no |
 | <a name="input_ssh_public_keys_file"></a> [ssh\_public\_keys\_file](#input\_ssh\_public\_keys\_file) | Path to a file containing SSH public keys (one per line). Mutually exclusive with ssh\_public\_keys. | `string` | `null` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], \_ and -. This is only meta information | `string` | `"cluster"` | no |
 | <a name="input_template_name"></a> [template\_name](#input\_template\_name) | Name of the EXISTING Proxmox template to clone from. | `string` | n/a | yes |
 | <a name="input_vga_type"></a> [vga\_type](#input\_vga\_type) | Display type (e.g., 'serial0', 'std', 'qxl'). 'serial0' is good for headless servers. | `string` | `"std"` | no |
 | <a name="input_worker_base_vmid"></a> [worker\_base\_vmid](#input\_worker\_base\_vmid) | Starting VMID for worker nodes. If set to 0, Proxmox will assign the next available ID for each. If > 0, subsequent VMs get base\_vmid + index. | `number` | `0` | no |
@@ -160,6 +160,7 @@ No modules.
 | <a name="input_worker_name_prefix"></a> [worker\_name\_prefix](#input\_worker\_name\_prefix) | Prefix for worker VM names. Full name will be prefix + suffix\_format (e.g., 'worker-'). | `string` | `"worker-"` | no |
 | <a name="input_worker_os_disk_size"></a> [worker\_os\_disk\_size](#input\_worker\_os\_disk\_size) | OS disk size for worker VMs (e.g., '100G'). Overrides default\_os\_disk\_size. | `string` | `null` | no |
 | <a name="input_worker_os_disk_storage"></a> [worker\_os\_disk\_storage](#input\_worker\_os\_disk\_storage) | Storage pool for worker OS disks. Overrides default\_os\_disk\_storage. | `string` | `null` | no |
+| <a name="input_worker_tags"></a> [worker\_tags](#input\_worker\_tags) | Tags of the VM. Comma-separated values (e.g. tag1,tag2,tag3). Tag may not start with - and may only include the following characters: [a-z], [0-9], \_ and -. This is only meta information | `string` | `"workers"` | no |
 | <a name="input_worker_vm_cores"></a> [worker\_vm\_cores](#input\_worker\_vm\_cores) | Number of CPU cores for worker VMs. Overrides default\_vm\_cores. | `number` | `null` | no |
 | <a name="input_worker_vm_memory"></a> [worker\_vm\_memory](#input\_worker\_vm\_memory) | Memory (in MiB) for worker VMs. Overrides default\_vm\_memory. | `number` | `null` | no |
 | <a name="input_worker_vm_sockets"></a> [worker\_vm\_sockets](#input\_worker\_vm\_sockets) | Number of CPU sockets for worker VMs. Overrides default\_vm\_sockets. | `number` | `null` | no |

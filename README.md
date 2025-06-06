@@ -1,4 +1,4 @@
-# Module Name
+# Terraform Proxmox K8s Nodes
 
 A terraform module for deploying worker and control plane nodes that can be used by Kubernetes.
 
